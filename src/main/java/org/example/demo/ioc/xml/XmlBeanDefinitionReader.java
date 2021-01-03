@@ -30,7 +30,7 @@ public class XmlBeanDefinitionReader implements BeanDefinitionReader{
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             inputStream = resource.getInputStream();
             Document document = documentBuilder.parse(inputStream);
-            // 将 xml 中的bean 放到 map 中
+            // 将 xml 中的 bean的定义 放到 map 中
             registerBeanDefinitions(document);
             inputStream.close();
         }catch (Exception e){
@@ -44,6 +44,7 @@ public class XmlBeanDefinitionReader implements BeanDefinitionReader{
         for(int i=0; i<nodeList.getLength(); ++i){
             Node node = nodeList.item(i);
             if(node instanceof Element){
+                // 从配置文件读取定义
                 Element beanNode = (Element) node;
                 String id = beanNode.getAttribute("id");
                 String className = beanNode.getAttribute("class");

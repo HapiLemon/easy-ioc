@@ -24,14 +24,17 @@ public class ClassPathXmlApplicationContext implements ApplicationContext{
     public ClassPathXmlApplicationContext(String configLocation, BeanFactory beanFactory){
         this.configLocation = configLocation;
         this.beanFactory = beanFactory;
+
         refresh();
     }
 
     private void refresh(){
 
-        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new URLResource(configLocation));
+        // 得到一个resources对象 只是为了后面能将配置文件以InputStream对象的方式读出
+        URLResource urlResource = new URLResource(configLocation);
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(urlResource);
         for(Map.Entry<String, BeanDefinition> entry : xmlBeanDefinitionReader.getBeanDefinitionMap().entrySet()) {
-            // 将map又做成一个Map<String, Map<>>
+            // 将map放到beanFactory的实现类的成员变量里面
             this.beanFactory.registerBeanDefinition(entry.getKey(), entry.getValue());
         }
     }
